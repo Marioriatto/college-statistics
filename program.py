@@ -8,19 +8,23 @@ from sklearn.feature_selection import f_regression, SelectKBest
 from sklearn.decomposition import PCA
 df = pd.read_csv('./archive/data.csv')
 df = df.dropna()
-X = df[['Age','Min','MP']]
+X = df[['90s','Min','MP','Rk']]
 y = df['Gls']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
 scaler = MinMaxScaler()
-X_train = scaler.fit_transform(X_train)
+X['MP'] = scaler.fit_transform(X[['MP']])
+X['Min'] = scaler.fit_transform(X[['Min']])
 
 selector = SelectKBest(score_func=f_regression, k=2)
-X_train = selector.fit_transform(X_train, y_train)
+selector.fit_transform(X, y)
+scores = selector.scores_
+variables = X.columns
 
-
-pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X_train)
-
-plt.figure(figsize=(8, 6))
-plt.scatter(X_pca[:, 0], X_pca[:, 1], cmap='viridis')
+selectorResults = pd.DataFrame({'Variable': variables, 'Score': scores}).sort_values(by='Score', ascending=False)
+plt.figure(figsize=(10,6))
+plt.bar(selectorResults['Variable'], selectorResults['Score'])
+plt.title('Feature Selection using ANOVA F-test')
+plt.xlabel('Variables')
+plt.ylabel('Influence on Goals')
 plt.show()
+
