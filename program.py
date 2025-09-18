@@ -17,13 +17,10 @@ X_train = scaler.fit_transform(X_train)
 selector = SelectKBest(score_func=f_regression, k=2)
 X_train = selector.fit_transform(X_train, y_train)
 
-# Initialize PCA and reduce the dataset to 2 components
+
 pca = PCA(n_components=2)
 X_pca = pca.fit_transform(X_train)
-# Plot the PCA results
+
 plt.figure(figsize=(8, 6))
 plt.scatter(X_pca[:, 0], X_pca[:, 1], cmap='viridis')
-plt.colorbar(label='Species')
-plt.xlabel('Principal Component 1')
-plt.ylabel('Principal Component 2')
 plt.show()
