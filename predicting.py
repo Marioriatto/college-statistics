@@ -28,9 +28,6 @@ plt.axline((0,0), slope=1,color='black',linewidth=0.5, ls='--')
 plt.grid()
 plt.show()
 
-min_input = widgets.FloatSlider(value=50, min=0, max=100, step=1, description='Min:')
-mp_input = widgets.FloatSlider(value=2000, min=0, max=4000, step=10, description='MP:')
-
 mae = mean_absolute_error(y_test, y_hat)
 print(f'Mean Absolute Error (MAE): {mae:.2f}')
 mse = mean_squared_error(y_test, y_hat)
